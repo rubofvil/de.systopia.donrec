@@ -118,18 +118,11 @@ class CRM_Donrec_Logic_Profile {
    * return all existing profiles
    *
    * @return array(name => name)
+   *
+   * @author Fritz Mielert
    */
   public static function getAllNames() {
-    $allProfiles = array();
-
-    // FIXME: is there a better way than a SQL query?
-    $sql = "SELECT name FROM civicrm_setting WHERE group_name = %1;";
-    $sql_params = array(1 => array(self::$SETTINGS_PROFILE_GROUP, 'String'));
-    $query = CRM_Core_DAO::executeQuery($sql, $sql_params);
-    while ($query->fetch()) {
-      $allProfiles[$query->name] = $query->name;
-    }
-
+    $allProfiles = Civi::settings()->get(self::$SETTINGS_PROFILE_GROUP);
     if (empty($allProfiles)) {
       $allProfiles['Default'] = 'Default';
     }
